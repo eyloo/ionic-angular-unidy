@@ -6,9 +6,15 @@ import { RouterModule } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import {  AuthModule, LogLevel } from 'angular-auth-oidc-client';
 
-const oidcHost = 'https://btc-echo.staging.unidy.de';
-const redirectHost = 'https://btc-echo-api-dev-mcb.vercel.app';
-const unidyClientID = 'OXpanIyzqOu4po_UmUgRNtCrQnUkwjmIB9GDsu9bsqs';
+// Prod
+const oidcHost = 'https://account.btc-echo.de';
+const redirectHost = 'https://btc-echo-api-dev-mcb.vercel.app/oauth/callback';
+const unidyClientID = 'nKVKoLnguwMhWdy0qxV4HJst9NvP9Az2GdrpsJ4MwWM';
+
+// Staging
+// const oidcHost = 'https://btc-echo.staging.unidy.de';
+// const redirectHost = 'https://btc-echo-api-dev-mcb.vercel.app/oauth/callback';
+// const unidyClientID = 'OXpanIyzqOu4po_UmUgRNtCrQnUkwjmIB9GDsu9bsqs';
 
 /**
  * `angular-auth-oidc-client` is an Angular library for implementing OpenID Connect & OAuth2 in Angular
@@ -25,8 +31,7 @@ const unidyClientID = 'OXpanIyzqOu4po_UmUgRNtCrQnUkwjmIB9GDsu9bsqs';
     AuthModule.forRoot({
       config: {
         authority: oidcHost + '/oauth/authorize',
-        redirectUrl: redirectHost + '/oauth/callback',
-        postLogoutRedirectUri: redirectHost + '/oauth/callback',
+        redirectUrl: redirectHost,
         clientId: unidyClientID,
         scope: 'openid profile email address subscriptions:read subscriptions:write active_subscriptions',
         responseType: 'code',
@@ -37,6 +42,7 @@ const unidyClientID = 'OXpanIyzqOu4po_UmUgRNtCrQnUkwjmIB9GDsu9bsqs';
         forbiddenRoute: '/home',
         unauthorizedRoute: '/home',
         logLevel: environment.production ? LogLevel.Error : LogLevel.Debug,
+        triggerAuthorizationResultEvent: true,
         authWellknownEndpoints: {
           issuer: oidcHost,
           authorizationEndpoint: oidcHost + '/oauth/authorize',
