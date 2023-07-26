@@ -35,14 +35,12 @@ const unidyClientID = 'nKVKoLnguwMhWdy0qxV4HJst9NvP9Az2GdrpsJ4MwWM';
         clientId: unidyClientID,
         scope: 'openid profile email address subscriptions:read subscriptions:write active_subscriptions',
         responseType: 'code',
+        silentRenew: false, // only works on server
         useRefreshToken: true,
-        triggerRefreshWhenIdTokenExpired: false,
-        autoUserInfo: false,
-        postLoginRoute: '/home',
-        forbiddenRoute: '/home',
-        unauthorizedRoute: '/home',
-        logLevel: environment.production ? LogLevel.Error : LogLevel.Debug,
+        startCheckSession: true,
+        renewTimeBeforeTokenExpiresInSeconds: 10,
         triggerAuthorizationResultEvent: true,
+        logLevel: environment.production ? LogLevel.Error : LogLevel.Debug,
         authWellknownEndpoints: {
           issuer: oidcHost,
           authorizationEndpoint: oidcHost + '/oauth/authorize',
@@ -53,7 +51,8 @@ const unidyClientID = 'nKVKoLnguwMhWdy0qxV4HJst9NvP9Az2GdrpsJ4MwWM';
           jwksUri: oidcHost + '/oauth/discovery/keys',
           endSessionEndpoint: oidcHost + '/oauth/logout'
         },
-        authWellknownEndpointUrl: oidcHost + '/.well-known/openid-configuration'
+        authWellknownEndpointUrl: oidcHost + '/.well-known/openid-configuration',
+        secureRoutes: [environment.unidy.issuer + '/api/'],
       }
     }),
     CommonModule,
